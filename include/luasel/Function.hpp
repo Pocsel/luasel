@@ -192,23 +192,23 @@ namespace Luasel {
 
     /********* Ref *********/
     template<class T>
-        inline T Ref::To() const throw()
+        inline T Ref::To() const noexcept
         {
             auto& cppMt = this->_state.GetMetaTable(typeid(typename std::remove_pointer<T>::type).hash_code());
             return cppMt.MakeNative<T>(*this);
         }
-    template<> bool Ref::To<bool>() const throw();
-    template<> int Ref::To<int>() const throw();
-    template<> unsigned int Ref::To<unsigned int>() const throw();
-    template<> char Ref::To<char>() const throw();
-    template<> unsigned char Ref::To<unsigned char>() const throw();
-    template<> double Ref::To<double>() const throw();
-    template<> float Ref::To<float>() const throw();
-    template<> std::string Ref::To<std::string>() const throw();
-    template<> inline Ref Ref::To<Ref>() const throw() { return *this; }
+    template<> bool Ref::To<bool>() const noexcept;
+    template<> int Ref::To<int>() const noexcept;
+    template<> unsigned int Ref::To<unsigned int>() const noexcept;
+    template<> char Ref::To<char>() const noexcept;
+    template<> unsigned char Ref::To<unsigned char>() const noexcept;
+    template<> double Ref::To<double>() const noexcept;
+    template<> float Ref::To<float>() const noexcept;
+    template<> std::string Ref::To<std::string>() const noexcept;
+    template<> inline Ref Ref::To<Ref>() const noexcept { return *this; }
 
     template<class T>
-        inline bool Ref::Is() const throw()
+        inline bool Ref::Is() const noexcept
         {
             if (this->GetMetaTable().IsNoneOrNil() ||
                     this->GetMetaTable() != this->_state.GetMetaTable(typeid(typename std::remove_pointer<T>::type).hash_code()).GetMetaTable())
@@ -257,7 +257,7 @@ namespace Luasel {
         }
 
     template <typename T>
-        inline T Ref::To(T const& defaultValue) const throw()
+        inline T Ref::To(T const& defaultValue) const noexcept
         {
             try
             {
@@ -332,7 +332,7 @@ namespace Luasel {
         }
 
     template <typename T>
-        inline bool Ref::Equals(T value) const throw()
+        inline bool Ref::Equals(T value) const noexcept
         {
             return *this == this->_state.Make(value);
         }
@@ -340,24 +340,24 @@ namespace Luasel {
     /********* CallHelper *********/
     // arguments helpers
     template<class T>
-        inline void CallHelper::PushArg(T const& arg) throw()
+        inline void CallHelper::PushArg(T const& arg) noexcept
         {
             this->PushArg(this->_i.Make(arg));
         }
     template<class T>
-        inline void CallHelper::PushArgMove(T&& arg) throw()
+        inline void CallHelper::PushArgMove(T&& arg) noexcept
         {
             this->PushArg(this->_i.Make(std::move(arg)));
         }
 
     // return helpers
     template<class T>
-        inline void CallHelper::PushRet(T const& ret) throw()
+        inline void CallHelper::PushRet(T const& ret) noexcept
         {
             this->PushRet(this->_i.Make(ret));
         }
     template<class T>
-        inline void CallHelper::PushRetMove(T&& ret) throw()
+        inline void CallHelper::PushRetMove(T&& ret) noexcept
         {
             this->PushRet(this->_i.Make(std::move(ret)));
         }

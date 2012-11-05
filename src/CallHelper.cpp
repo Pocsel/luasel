@@ -4,12 +4,12 @@
 
 namespace Luasel {
 
-    CallHelper::CallHelper(Interpreter& i) throw() :
+    CallHelper::CallHelper(Interpreter& i) noexcept :
         _i(i)
     {
     }
 
-    void CallHelper::PushArg(Ref const& arg) throw()
+    void CallHelper::PushArg(Ref const& arg) noexcept
     {
         this->_args.push_front(arg);
     }
@@ -28,12 +28,12 @@ namespace Luasel {
         return arg;
     }
 
-    void CallHelper::ClearArgs() throw()
+    void CallHelper::ClearArgs() noexcept
     {
         this->_args.clear();
     }
 
-    void CallHelper::PushRet(Ref const& ret) throw()
+    void CallHelper::PushRet(Ref const& ret) noexcept
     {
         this->_rets.push_front(ret);
     }
@@ -52,7 +52,7 @@ namespace Luasel {
         return ret;
     }
 
-    void CallHelper::ClearRets() throw()
+    void CallHelper::ClearRets() noexcept
     {
         this->_rets.clear();
     }

@@ -15,7 +15,7 @@ namespace Luasel {
         this->_globals->FromStack();
     }
 
-    Interpreter::~Interpreter() throw()
+    Interpreter::~Interpreter() noexcept
     {
         delete this->_globals;
         delete this->_state;
@@ -121,12 +121,12 @@ namespace Luasel {
         }
     }
 
-    Ref const& Interpreter::Globals() const throw()
+    Ref const& Interpreter::Globals() const noexcept
     {
         return *this->_globals;
     }
 
-    void Interpreter::DumpStack() const throw()
+    void Interpreter::DumpStack() const noexcept
     {
         std::cout << "------- Lua Stack Dump -------" << std::endl;
         std::cout << "(size: " << lua_gettop(*this->_state) << ")" << std::endl;

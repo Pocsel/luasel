@@ -10,12 +10,12 @@ namespace Luasel {
             ++(*this);
     }
 
-    Iterator::Iterator(Iterator const& iterator) throw() :
+    Iterator::Iterator(Iterator const& iterator) noexcept :
         _table(iterator.GetTable()), _key(iterator.GetKey()), _value(iterator.GetValue()), _end(iterator.IsEnd())
     {
     }
 
-    Iterator& Iterator::operator =(Iterator const& iterator) throw()
+    Iterator& Iterator::operator =(Iterator const& iterator) noexcept
     {
         if (this != &iterator)
         {
@@ -27,13 +27,13 @@ namespace Luasel {
         return *this;
     }
 
-    bool Iterator::operator ==(Iterator const& iterator) const throw()
+    bool Iterator::operator ==(Iterator const& iterator) const noexcept
     {
         return this->_end && iterator.IsEnd();
         //return iterator.GetTable() == this->_table && iterator.GetKey() == this->_key;
     }
 
-    bool Iterator::operator !=(Iterator const& iterator) const throw()
+    bool Iterator::operator !=(Iterator const& iterator) const noexcept
     {
         return !(*this == iterator);
     }

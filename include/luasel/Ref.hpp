@@ -15,17 +15,17 @@ namespace Luasel {
             int _ref;
 
         public:
-            Ref(State& state) throw();
-            Ref(Ref const& ref) throw();
-            ~Ref() throw(); // call Unref() to allow destruction after interpreter destruction without crashing
-            Ref& operator =(Ref const& ref) throw();
-            bool operator ==(Ref const& ref) const throw(); // this is a value comparison, not a reference comparison (uses lua_rawequal)
-            bool operator !=(Ref const& ref) const throw(); // same
+            Ref(State& state) noexcept;
+            Ref(Ref const& ref) noexcept;
+            ~Ref() noexcept; // call Unref() to allow destruction after interpreter destruction without crashing
+            Ref& operator =(Ref const& ref) noexcept;
+            bool operator ==(Ref const& ref) const noexcept; // this is a value comparison, not a reference comparison (uses lua_rawequal)
+            bool operator !=(Ref const& ref) const noexcept; // same
             template <typename T>
-                bool Equals(T value) const throw(); // same
-            void Unref() throw();
-            bool IsValid() const throw(); // returns false if Unref() was called, or if the reference was created without copy (with a State)
-            size_t GetLength() const throw(); // returns the length for a string, the size for a table (#), the number of bytes for a user data and 0 for everything else
+                bool Equals(T value) const noexcept; // same
+            void Unref() noexcept;
+            bool IsValid() const noexcept; // returns false if Unref() was called, or if the reference was created without copy (with a State)
+            size_t GetLength() const noexcept; // returns the length for a string, the size for a table (#), the number of bytes for a user data and 0 for everything else
             // function call
             void Call(CallHelper& callHelper) const throw(std::runtime_error);
             Ref operator ()() const throw(std::runtime_error);
@@ -50,18 +50,18 @@ namespace Luasel {
                 Ref Set(T key, U value) const throw(std::runtime_error); // returns a new reference to value
             // metatable
             Ref SetMetaTable(Ref const& table) const throw(std::runtime_error); // returns table
-            bool HasMetaTable() const throw(); // might return true even if the metatable is not a table (but something else like a number)
-            Ref GetMetaTable() const throw(); // returns a reference to nil if no metatable was found
+            bool HasMetaTable() const noexcept; // might return true even if the metatable is not a table (but something else like a number)
+            Ref GetMetaTable() const noexcept; // returns a reference to nil if no metatable was found
             // safe type conversions
-            bool ToBoolean() const throw(); // everything is true except nil and false (0 and "0" are true)
-            int ToInteger() const throw(); // type conversion done by lua, returns 0 in case of error
-            double ToNumber() const throw(); // type conversion done by lua, returns 0 in case of error
-            std::string ToString() const throw(); // type conversion done by lua, returns an empty string in case of error
-            void* ToUserData() const throw(); // returns a null pointer if it's not a user data
+            bool ToBoolean() const noexcept; // everything is true except nil and false (0 and "0" are true)
+            int ToInteger() const noexcept; // type conversion done by lua, returns 0 in case of error
+            double ToNumber() const noexcept; // type conversion done by lua, returns 0 in case of error
+            std::string ToString() const noexcept; // type conversion done by lua, returns an empty string in case of error
+            void* ToUserData() const noexcept; // returns a null pointer if it's not a user data
             template <typename T>
-                T To() const throw();
+                T To() const noexcept;
             template <typename T>
-                T To(T const& defaultValue) const throw();
+                T To(T const& defaultValue) const noexcept;
             // unsafe type conversions
             bool CheckBoolean(std::string const& e = "") const throw(std::runtime_error);
             int CheckInteger(std::string const& e = "") const throw(std::runtime_error); // actually checks for a number, because an integer is a number for lua
@@ -73,28 +73,28 @@ namespace Luasel {
             template <typename T>
                 T Check() const throw(std::runtime_error) { return this->Check<T>(""); }
             // type tests
-            std::string GetTypeName() const throw();
-            int GetType() const throw(); // possible values : LUA_TNIL, LUA_TBOOLEAN, LUA_TLIGHTUSERDATA, LUA_TNUMBER, LUA_TSTRING, LUA_TTABLE, LUA_TFUNCTION, LUA_TUSERDATA, LUA_TTHREAD, LUA_TNONE
-            bool Exists() const throw(); // same as IsNoneOrNil(), use this instead of IsNil()/IsNoneOrNil()/IsNone()
-            bool IsBoolean() const throw();
-            bool IsCFunction() const throw();
-            bool IsFunction() const throw();
-            bool IsLightUserData() const throw();
-            bool IsNil() const throw();
-            bool IsNone() const throw();
-            bool IsNoneOrNil() const throw();
-            bool IsNumber() const throw();
-            bool IsString() const throw();
-            bool IsTable() const throw();
-            bool IsThread() const throw();
-            bool IsUserData() const throw();
+            std::string GetTypeName() const noexcept;
+            int GetType() const noexcept; // possible values : LUA_TNIL, LUA_TBOOLEAN, LUA_TLIGHTUSERDATA, LUA_TNUMBER, LUA_TSTRING, LUA_TTABLE, LUA_TFUNCTION, LUA_TUSERDATA, LUA_TTHREAD, LUA_TNONE
+            bool Exists() const noexcept; // same as IsNoneOrNil(), use this instead of IsNil()/IsNoneOrNil()/IsNone()
+            bool IsBoolean() const noexcept;
+            bool IsCFunction() const noexcept;
+            bool IsFunction() const noexcept;
+            bool IsLightUserData() const noexcept;
+            bool IsNil() const noexcept;
+            bool IsNone() const noexcept;
+            bool IsNoneOrNil() const noexcept;
+            bool IsNumber() const noexcept;
+            bool IsString() const noexcept;
+            bool IsTable() const noexcept;
+            bool IsThread() const noexcept;
+            bool IsUserData() const noexcept;
             template <typename T>
-                bool Is() const throw();
+                bool Is() const noexcept;
 
             // other stuff (don't call)
-            void FromStack() throw();
-            void ToStack() const throw();
-            State& GetState() const throw() { return this->_state; }
+            void FromStack() noexcept;
+            void ToStack() const noexcept;
+            State& GetState() const noexcept { return this->_state; }
     };
 
 }

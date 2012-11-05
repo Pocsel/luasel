@@ -34,7 +34,7 @@ namespace Luasel {
 
         public:
             Interpreter() throw(std::runtime_error);
-            ~Interpreter() throw();
+            ~Interpreter() noexcept;
             Serializer const& GetSerializer() const { return this->_serializer; }
             // script loading
             Ref LoadString(std::string const& code) const throw(std::runtime_error);
@@ -42,23 +42,23 @@ namespace Luasel {
             void DoString(std::string const& code) const throw(std::runtime_error);
             void DoFile(std::string const& path) const throw(std::runtime_error);
             // global table
-            Ref const& Globals() const throw();
+            Ref const& Globals() const noexcept;
             // reference creators
-            Ref MakeBoolean(bool val) throw() { return this->_state->MakeBoolean(val); }
-            Ref MakeFunction(std::function<void(CallHelper&)> val) throw() { return this->_state->MakeFunction(val); }
-            Ref MakeNil() throw() { return this->_state->MakeNil(); }
-            Ref MakeInteger(int val) throw() { return this->_state->MakeInteger(val); }
-            Ref MakeNumber(double val) throw() { return this->_state->MakeNumber(val); }
-            Ref MakeString(std::string const& val) throw() { return this->_state->MakeString(val); }
-            Ref MakeTable() throw() { return this->_state->MakeTable(); }
+            Ref MakeBoolean(bool val) noexcept { return this->_state->MakeBoolean(val); }
+            Ref MakeFunction(std::function<void(CallHelper&)> val) noexcept { return this->_state->MakeFunction(val); }
+            Ref MakeNil() noexcept { return this->_state->MakeNil(); }
+            Ref MakeInteger(int val) noexcept { return this->_state->MakeInteger(val); }
+            Ref MakeNumber(double val) noexcept { return this->_state->MakeNumber(val); }
+            Ref MakeString(std::string const& val) noexcept { return this->_state->MakeString(val); }
+            Ref MakeTable() noexcept { return this->_state->MakeTable(); }
             Ref MakeUserData(void** data, size_t size) throw(std::runtime_error) { return this->_state->MakeUserData(data, size); }
             template <typename T>
                 Ref Make(T val) throw(std::runtime_error);
             template <typename T>
                 Ref MakeMove(T&& val) throw(std::runtime_error);
             // other stuff
-            State& GetState() throw() { return *this->_state; }
-            void DumpStack() const throw();
+            State& GetState() noexcept { return *this->_state; }
+            void DumpStack() const noexcept;
 
             template<class T>
                 Ref Bind(T function);

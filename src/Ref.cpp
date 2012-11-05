@@ -10,23 +10,23 @@
 
 namespace Luasel {
 
-    Ref::Ref(State& state) throw() :
+    Ref::Ref(State& state) noexcept :
         _state(state), _ref(LUA_NOREF)
     {
     }
 
-    Ref::Ref(Ref const& ref) throw() :
+    Ref::Ref(Ref const& ref) noexcept :
         _state(ref._state), _ref(LUA_NOREF)
     {
         *this = ref;
     }
 
-    Ref::~Ref() throw()
+    Ref::~Ref() noexcept
     {
         this->Unref();
     }
 
-    Ref& Ref::operator =(Ref const& ref) throw()
+    Ref& Ref::operator =(Ref const& ref) noexcept
     {
         if (this != &ref)
         {
@@ -36,7 +36,7 @@ namespace Luasel {
         return *this;
     }
 
-    bool Ref::operator ==(Ref const& ref) const throw()
+    bool Ref::operator ==(Ref const& ref) const noexcept
     {
         ref.ToStack();
         this->ToStack();
@@ -45,12 +45,12 @@ namespace Luasel {
         return equal;
     }
 
-    bool Ref::operator !=(Ref const& ref) const throw()
+    bool Ref::operator !=(Ref const& ref) const noexcept
     {
         return !(*this == ref);
     }
 
-    void Ref::Unref() throw()
+    void Ref::Unref() noexcept
     {
         if (this->_ref == LUA_NOREF)
             return;
@@ -58,12 +58,12 @@ namespace Luasel {
         this->_ref = LUA_NOREF;
     }
 
-    bool Ref::IsValid() const throw()
+    bool Ref::IsValid() const noexcept
     {
         return this->_ref != LUA_NOREF;
     }
 
-    size_t Ref::GetLength() const throw()
+    size_t Ref::GetLength() const noexcept
     {
         this->ToStack();
         size_t ret = lua_objlen(this->_state, -1);
@@ -189,7 +189,7 @@ namespace Luasel {
         return table;
     }
 
-    bool Ref::HasMetaTable() const throw()
+    bool Ref::HasMetaTable() const noexcept
     {
         this->ToStack();
         if (lua_getmetatable(this->_state, -1))
@@ -201,7 +201,7 @@ namespace Luasel {
         return false;
     }
 
-    Ref Ref::GetMetaTable() const throw()
+    Ref Ref::GetMetaTable() const noexcept
     {
         this->ToStack();
         if (lua_getmetatable(this->_state, -1))
@@ -216,7 +216,7 @@ namespace Luasel {
     }
 
 #define MAKE_TOMETHOD(name, lua_func, type) \
-    type Ref::name() const throw() \
+    type Ref::name() const noexcept \
     { \
         this->ToStack(); \
         type ret = lua_func(this->_state, -1); \
@@ -229,7 +229,7 @@ namespace Luasel {
     MAKE_TOMETHOD(ToNumber, lua_tonumber, double);
     MAKE_TOMETHOD(ToUserData, lua_touserdata, void*);
 
-    std::string Ref::ToString() const throw()
+    std::string Ref::ToString() const noexcept
     {
         this->ToStack();
         char const* str = lua_tostring(this->_state, -1);
@@ -245,7 +245,7 @@ namespace Luasel {
 
 #define MAKE_TOTEMPLATEMETHOD(method, type) \
     template <> \
-        type Ref::To<type>() const throw() \
+        type Ref::To<type>() const noexcept \
         { \
             return this->method(); \
         }
@@ -319,12 +319,12 @@ namespace Luasel {
     MAKE_CHECKTEMPLATEMETHOD(CheckNumber, float);
     MAKE_CHECKTEMPLATEMETHOD(CheckString, std::string);
 
-    std::string Ref::GetTypeName() const throw()
+    std::string Ref::GetTypeName() const noexcept
     {
         return lua_typename(this->_state, this->GetType());
     }
 
-    int Ref::GetType() const throw()
+    int Ref::GetType() const noexcept
     {
         this->ToStack();
         int type = lua_type(this->_state, -1);
@@ -332,13 +332,13 @@ namespace Luasel {
         return type;
     }
 
-    bool Ref::Exists() const throw()
+    bool Ref::Exists() const noexcept
     {
         return !this->IsNoneOrNil();
     }
 
 #define MAKE_ISMETHOD(name, lua_func) \
-    bool Ref::name() const throw() \
+    bool Ref::name() const noexcept \
     { \
         this->ToStack(); \
         bool ret = lua_func(this->_state, -1); \
@@ -359,13 +359,13 @@ namespace Luasel {
     MAKE_ISMETHOD(IsThread, lua_isthread);
     MAKE_ISMETHOD(IsUserData, lua_isuserdata);
 
-    void Ref::FromStack() throw()
+    void Ref::FromStack() noexcept
     {
         this->Unref();
         this->_ref = luaL_ref(this->_state, LUA_REGISTRYINDEX);
     }
 
-    void Ref::ToStack() const throw()
+    void Ref::ToStack() const noexcept
     {
         lua_rawgeti(this->_state, LUA_REGISTRYINDEX, this->_ref);
     }

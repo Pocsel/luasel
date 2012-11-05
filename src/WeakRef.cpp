@@ -3,7 +3,7 @@
 
 namespace Luasel {
 
-    WeakRef::WeakRef(Ref const& ref) :
+    WeakRef::WeakRef(Ref const& ref) noexcept :
         _state(ref.GetState()),
         _id(_state.GetWeakReference(ref))
     {
@@ -13,14 +13,14 @@ namespace Luasel {
     {
     }
 
-    WeakRef& WeakRef::operator =(Ref const& ref)
+    WeakRef& WeakRef::operator =(Ref const& ref) noexcept
     {
         assert(&this->_state == &ref.GetState() && "Cannot copy a reference from another interpreter");
         this->_id = _state.GetWeakReference(ref);
         return *this;
     }
 
-    WeakRef& WeakRef::operator =(WeakRef const& ref)
+    WeakRef& WeakRef::operator =(WeakRef const& ref) noexcept
     {
         if (this != &ref)
         {
@@ -30,7 +30,7 @@ namespace Luasel {
         return *this;
     }
 
-    Ref WeakRef::Lock() const
+    Ref WeakRef::Lock() const noexcept
     {
         return this->_state.GetWeakReference(this->_id);
     }

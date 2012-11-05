@@ -37,40 +37,40 @@ namespace Luasel {
 
         public:
             State(Interpreter& interpreter) throw(std::runtime_error);
-            ~State() throw();
-            bool GetGarbageCollectionEnabled() const { return this->_garbageCollectionEnabled; }
-            void StopGarbageCollector();
-            void RestartGarbageCollector();
-            MetaTable& RegisterMetaTable(MetaTable&& metaTable, std::size_t hash) throw();
-            Ref MakeBoolean(bool val) throw();
-            Ref MakeFunction(std::function<void(CallHelper&)> val) throw();
-            Ref MakeNil() throw();
-            Ref MakeInteger(int val) throw();
-            Ref MakeNumber(double val) throw();
-            Ref MakeString(std::string const& val) throw();
-            Ref MakeTable() throw();
+            ~State();
+            bool GetGarbageCollectionEnabled() const noexcept { return this->_garbageCollectionEnabled; }
+            void StopGarbageCollector() noexcept;
+            void RestartGarbageCollector() noexcept;
+            MetaTable& RegisterMetaTable(MetaTable&& metaTable, std::size_t hash) noexcept;
+            Ref MakeBoolean(bool val) noexcept;
+            Ref MakeFunction(std::function<void(CallHelper&)> val) noexcept;
+            Ref MakeNil() noexcept;
+            Ref MakeInteger(int val) noexcept;
+            Ref MakeNumber(double val) noexcept;
+            Ref MakeString(std::string const& val) noexcept;
+            Ref MakeTable() noexcept;
             Ref MakeUserData(void** data, size_t size) throw(std::runtime_error);
             template<typename T>
-                Ref Make(T const& val) throw();
-            operator lua_State*() const throw() { return this->_state; }
-            Interpreter& GetInterpreter() throw() { return this->_interpreter; }
+                Ref Make(T const& val) noexcept;
+            operator lua_State*() const noexcept { return this->_state; }
+            Interpreter& GetInterpreter() noexcept { return this->_interpreter; }
             MetaTable const& GetMetaTable(std::size_t hash) throw(std::runtime_error);
             Ref GetWeakReference(unsigned int id) const;
             unsigned int GetWeakReference(Ref const& ref);
     };
 
-    template<> Ref State::Make<bool>(bool const& val) throw();
-    template<> Ref State::Make<int>(int const& val) throw();
-    template<> Ref State::Make<unsigned int>(unsigned int const& val) throw();
-    template<> Ref State::Make<char>(char const& val) throw();
-    template<> Ref State::Make<unsigned char>(unsigned char const& val) throw();
-    template<> Ref State::Make<double>(double const& val) throw();
-    template<> Ref State::Make<float>(float const& val) throw();
-    template<> Ref State::Make<std::string>(std::string const& val) throw();
-    template<> Ref State::Make<char const*>(char const* const& val) throw();
-    template<> Ref State::Make<std::function<void(CallHelper&)>>(std::function<void(CallHelper&)> const& val) throw();
+    template<> Ref State::Make<bool>(bool const& val) noexcept;
+    template<> Ref State::Make<int>(int const& val) noexcept;
+    template<> Ref State::Make<unsigned int>(unsigned int const& val) noexcept;
+    template<> Ref State::Make<char>(char const& val) noexcept;
+    template<> Ref State::Make<unsigned char>(unsigned char const& val) noexcept;
+    template<> Ref State::Make<double>(double const& val) noexcept;
+    template<> Ref State::Make<float>(float const& val) noexcept;
+    template<> Ref State::Make<std::string>(std::string const& val) noexcept;
+    template<> Ref State::Make<char const*>(char const* const& val) noexcept;
+    template<> Ref State::Make<std::function<void(CallHelper&)>>(std::function<void(CallHelper&)> const& val) noexcept;
 
-    template<> Ref State::Make<Ref>(Ref const& val) throw();
+    template<> Ref State::Make<Ref>(Ref const& val) noexcept;
 
 }
 

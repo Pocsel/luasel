@@ -79,7 +79,7 @@ namespace Luasel {
         this->_weakTable->SetMetaTable(metaWeakTable);
     }
 
-    State::~State() throw()
+    State::~State()
     {
         delete this->_weakTable;
         for (auto it = this->_metaTables.begin(), ite = this->_metaTables.end(); it != ite; ++it)
@@ -88,26 +88,26 @@ namespace Luasel {
         lua_close(this->_state);
     }
 
-    void State::StopGarbageCollector()
+    void State::StopGarbageCollector() noexcept
     {
         lua_gc(this->_state, LUA_GCSTOP, 0);
         this->_garbageCollectionEnabled = false;
     }
 
-    void State::RestartGarbageCollector()
+    void State::RestartGarbageCollector() noexcept
     {
         lua_gc(this->_state, LUA_GCRESTART, 0);
         this->_garbageCollectionEnabled = true;
     }
 
-    MetaTable& State::RegisterMetaTable(MetaTable&& metaTable, std::size_t hash) throw()
+    MetaTable& State::RegisterMetaTable(MetaTable&& metaTable, std::size_t hash) noexcept
     {
         auto ptr = new MetaTable(std::move(metaTable));
         this->_metaTables.insert(std::make_pair(hash, ptr));
         return *ptr;
     }
 
-    Ref State::MakeBoolean(bool val) throw()
+    Ref State::MakeBoolean(bool val) noexcept
     {
         lua_pushboolean(*this, val);
         Ref r(*this);
@@ -115,7 +115,7 @@ namespace Luasel {
         return r;
     }
 
-    Ref State::MakeFunction(std::function<void(CallHelper&)> val) throw()
+    Ref State::MakeFunction(std::function<void(CallHelper&)> val) noexcept
     {
 #ifdef new
 #undef new
@@ -134,7 +134,7 @@ namespace Luasel {
         return r;
     }
 
-    Ref State::MakeNil() throw()
+    Ref State::MakeNil() noexcept
     {
         lua_pushnil(*this);
         Ref r(*this);
@@ -142,7 +142,7 @@ namespace Luasel {
         return r;
     }
 
-    Ref State::MakeInteger(int val) throw()
+    Ref State::MakeInteger(int val) noexcept
     {
         lua_pushinteger(*this, val);
         Ref r(*this);
@@ -150,7 +150,7 @@ namespace Luasel {
         return r;
     }
 
-    Ref State::MakeNumber(double val) throw()
+    Ref State::MakeNumber(double val) noexcept
     {
         lua_pushnumber(*this, val);
         Ref r(*this);
@@ -158,7 +158,7 @@ namespace Luasel {
         return r;
     }
 
-    Ref State::MakeString(std::string const& val) throw()
+    Ref State::MakeString(std::string const& val) noexcept
     {
         lua_pushstring(*this, val.c_str());
         Ref r(*this);
@@ -166,7 +166,7 @@ namespace Luasel {
         return r;
     }
 
-    Ref State::MakeTable() throw()
+    Ref State::MakeTable() noexcept
     {
         lua_newtable(*this);
         Ref r(*this);
@@ -186,7 +186,7 @@ namespace Luasel {
 
 #define MAKE_MAKEMETHOD(type, make_func) \
     template <> \
-        Ref State::Make<type>(type const& val) throw() \
+        Ref State::Make<type>(type const& val) noexcept \
         { \
             return this->make_func(val); \
         }
@@ -202,7 +202,7 @@ namespace Luasel {
     MAKE_MAKEMETHOD(char const*, MakeString);
     MAKE_MAKEMETHOD(std::function<void(CallHelper&)>, MakeFunction);
 
-    template<> Ref State::Make<Ref>(Ref const& val) throw()
+    template<> Ref State::Make<Ref>(Ref const& val) noexcept
     {
         return val;
     }
