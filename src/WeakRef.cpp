@@ -1,3 +1,5 @@
+#include "Luasel.hpp"
+
 #include <cassert>
 #include <luasel/WeakRef.hpp>
 

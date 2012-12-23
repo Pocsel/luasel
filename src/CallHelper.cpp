@@ -1,3 +1,5 @@
+#include "Luasel.hpp"
+
 #include <luasel/CallHelper.hpp>
 #include <luasel/Interpreter.hpp>
 #include <luasel/Ref.hpp>
@@ -14,7 +16,7 @@ namespace Luasel {
         this->_args.push_front(arg);
     }
 
-    Ref CallHelper::PopArg(std::string const& error /* = "" */) throw(std::runtime_error)
+    Ref CallHelper::PopArg(std::string const& error /* = "" */)
     {
         if (this->_args.empty())
         {
@@ -38,7 +40,7 @@ namespace Luasel {
         this->_rets.push_front(ret);
     }
 
-    Ref CallHelper::PopRet(std::string const& error /* = "" */) throw(std::runtime_error)
+    Ref CallHelper::PopRet(std::string const& error /* = "" */)
     {
         if (this->_rets.empty())
         {

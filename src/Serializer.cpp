@@ -1,3 +1,5 @@
+#include "Luasel.hpp"
+
 #include <algorithm>
 #include <boost/lexical_cast.hpp>
 #include <luasel/Interpreter.hpp>
@@ -10,26 +12,26 @@ namespace Luasel {
     {
     }
 
-    std::string Serializer::Serialize(Ref const& ref, bool nilOnError /* = false */) const throw(std::runtime_error)
+    std::string Serializer::Serialize(Ref const& ref, bool nilOnError /* = false */) const
     {
         std::list<Ref> tables;
         return this->_Serialize(ref, tables, 1, nilOnError);
     }
 
-    Ref Serializer::Deserialize(std::string const& string) const throw(std::runtime_error)
+    Ref Serializer::Deserialize(std::string const& string) const
     {
         if (string.empty())
             return Ref(this->_interpreter.GetState());
         return this->_interpreter.LoadString("return " + string)();
     }
 
-    Ref Serializer::MakeSerializableCopy(Ref const& ref, bool nilOnError /* = false */) const throw(std::runtime_error)
+    Ref Serializer::MakeSerializableCopy(Ref const& ref, bool nilOnError /* = false */) const
     {
         std::list<Ref> tables;
         return this->_Copy(ref, tables, nilOnError);
     }
 
-    Ref Serializer::_Copy(Ref const& ref, std::list<Ref>& tables, bool nilOnError) const throw(std::runtime_error)
+    Ref Serializer::_Copy(Ref const& ref, std::list<Ref>& tables, bool nilOnError) const
     {
         if (ref.IsTable())
         {
@@ -63,7 +65,7 @@ namespace Luasel {
             return this->_CopySimpleValue(ref, nilOnError);
     }
 
-    Ref Serializer::_CopySimpleValue(Ref const& ref, bool nilOnError) const throw(std::runtime_error)
+    Ref Serializer::_CopySimpleValue(Ref const& ref, bool nilOnError) const
     {
         if (ref.IsNumber() || ref.IsBoolean() || ref.IsString() || ref.IsNil())
             return ref;
@@ -83,7 +85,7 @@ namespace Luasel {
         throw std::runtime_error("Luasel::Serializer: Value of type " + ref.GetTypeName() + " is not copyable or serializable");
     }
 
-    Ref Serializer::_CopyWithMetaTable(Ref const& ref, Ref const& table, bool nilOnError) const throw(std::runtime_error)
+    Ref Serializer::_CopyWithMetaTable(Ref const& ref, Ref const& table, bool nilOnError) const
     {
         auto cloneFunc = table["__clone"];
         if (!cloneFunc.IsFunction())
@@ -104,7 +106,7 @@ namespace Luasel {
         }
     }
 
-    std::string Serializer::_SerializeSimpleValue(Ref const& ref, bool nilOnError) const throw(std::runtime_error)
+    std::string Serializer::_SerializeSimpleValue(Ref const& ref, bool nilOnError) const
     {
         if (ref.IsNumber())
             return boost::lexical_cast<std::string>(ref.ToNumber());
@@ -130,7 +132,7 @@ namespace Luasel {
         throw std::runtime_error("Luasel::Serializer: Type " + ref.GetTypeName() + " is not serializable");
     }
 
-    std::string Serializer::_SerializeWithMetaTable(Ref const& ref, Ref const& table, bool nilOnError) const throw(std::runtime_error)
+    std::string Serializer::_SerializeWithMetaTable(Ref const& ref, Ref const& table, bool nilOnError) const
     {
         auto serializeFunc = table["__serialize"];
         if (!serializeFunc.IsFunction())
@@ -179,7 +181,7 @@ namespace Luasel {
         return ret;
     }
 
-    std::string Serializer::_Serialize(Ref const& ref, std::list<Ref>& tables, unsigned int level, bool nilOnError) const throw(std::runtime_error)
+    std::string Serializer::_Serialize(Ref const& ref, std::list<Ref>& tables, unsigned int level, bool nilOnError) const
     {
         if (ref.IsTable())
         {

@@ -1,3 +1,5 @@
+#include "Luasel.hpp"
+
 #include <iostream>
 #include <luasel/Lua.hpp>
 #include <luasel/Interpreter.hpp>
@@ -6,7 +8,7 @@
 
 namespace Luasel {
 
-    Interpreter::Interpreter() throw(std::runtime_error) :
+    Interpreter::Interpreter() :
         _serializer(*this)
     {
         this->_state = new State(*this);
@@ -21,7 +23,7 @@ namespace Luasel {
         delete this->_state;
     }
 
-    Ref Interpreter::LoadString(std::string const& code) const throw(std::runtime_error)
+    Ref Interpreter::LoadString(std::string const& code) const
     {
         if (luaL_loadstring(*this->_state, code.c_str()))
         {
@@ -35,7 +37,7 @@ namespace Luasel {
         return r;
     }
 
-    void Interpreter::RegisterLib(LibId lib) throw(std::runtime_error)
+    void Interpreter::RegisterLib(LibId lib)
     {
         char const* name;
         lua_CFunction func;
@@ -99,7 +101,7 @@ namespace Luasel {
         }
     }
 
-    void Interpreter::DoString(std::string const& code) const throw(std::runtime_error)
+    void Interpreter::DoString(std::string const& code) const
     {
         if (luaL_dostring(*this->_state, code.c_str()))
         {
@@ -110,7 +112,7 @@ namespace Luasel {
         }
     }
 
-    void Interpreter::DoFile(std::string const& path) const throw(std::runtime_error)
+    void Interpreter::DoFile(std::string const& path) const
     {
         if (luaL_dofile(*this->_state, path.c_str()))
         {

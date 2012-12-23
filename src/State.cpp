@@ -1,3 +1,5 @@
+#include "Luasel.hpp"
+
 #include <luasel/Lua.hpp>
 #include <luasel/State.hpp>
 #include <luasel/CallHelper.hpp>
@@ -65,7 +67,7 @@ namespace {
 
 namespace Luasel {
 
-    State::State(Interpreter& interpreter) throw(std::runtime_error) :
+    State::State(Interpreter& interpreter) :
         _interpreter(interpreter),
         _weakId(1),
         _garbageCollectionEnabled(true)
@@ -174,7 +176,7 @@ namespace Luasel {
         return r;
     }
 
-    Ref State::MakeUserData(void** data, size_t size) throw(std::runtime_error)
+    Ref State::MakeUserData(void** data, size_t size)
     {
         *data = lua_newuserdata(*this, size);
         if (!*data)
@@ -207,7 +209,7 @@ namespace Luasel {
         return val;
     }
 
-    MetaTable const& State::GetMetaTable(std::size_t hash) throw(std::runtime_error)
+    MetaTable const& State::GetMetaTable(std::size_t hash)
     {
         auto it = this->_metaTables.find(hash);
         if (it == this->_metaTables.end())

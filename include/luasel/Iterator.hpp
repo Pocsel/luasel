@@ -14,12 +14,12 @@ namespace Luasel {
             bool _end;
 
         public:
-            Iterator(Ref const& table, bool end) throw(std::runtime_error);
+            Iterator(Ref const& table, bool end); // can throw std::runtime_error
             Iterator(Iterator const& iterator) noexcept;
             Iterator& operator =(Iterator const& iterator) noexcept;
             bool operator ==(Iterator const& iterator) const noexcept; // iterators are equal ONLY if they are end iterators
             bool operator !=(Iterator const& iterator) const noexcept;
-            Iterator& operator ++() throw(std::runtime_error);
+            Iterator& operator ++(); // can throw std::runtime_error
             bool IsEnd() const noexcept { return this->_end; }
             Ref const& GetTable() const noexcept { return this->_table; }
             Ref const& GetKey() const noexcept { return this->_key; }

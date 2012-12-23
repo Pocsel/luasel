@@ -1,3 +1,5 @@
+#include "Luasel.hpp"
+
 #include <luasel/Interpreter.hpp>
 #include <luasel/Lua.hpp>
 #include <luasel/MetaTable.hpp>

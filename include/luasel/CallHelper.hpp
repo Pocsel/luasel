@@ -22,13 +22,13 @@ namespace Luasel {
             Interpreter& GetInterpreter() noexcept { return this->_i; }
             // arguments
             void PushArg(Ref const& arg) noexcept;
-            Ref PopArg(std::string const& error = "") throw(std::runtime_error);
+            Ref PopArg(std::string const& error = ""); // can throw std::runtime_error
             std::list<Ref>& GetArgList() noexcept { return this->_args; }
             std::size_t GetNbArgs() const noexcept { return this->_args.size(); }
             void ClearArgs() noexcept;
             // return values
             void PushRet(Ref const& ret) noexcept;
-            Ref PopRet(std::string const& error = "") throw(std::runtime_error);
+            Ref PopRet(std::string const& error = ""); // can throw std::runtime_error
             std::list<Ref>& GetRetList() noexcept { return this->_rets; }
             std::size_t GetNbRets() const noexcept { return this->_rets.size(); }
             void ClearRets() noexcept;

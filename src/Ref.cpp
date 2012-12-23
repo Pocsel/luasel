@@ -1,3 +1,5 @@
+#include "Luasel.hpp"
+
 #include <luasel/Lua.hpp>
 #include <luasel/Ref.hpp>
 #include <luasel/Iterator.hpp>
@@ -71,7 +73,7 @@ namespace Luasel {
         return ret;
     }
 
-    Ref Ref::operator ()() const throw(std::runtime_error)
+    Ref Ref::operator ()() const
     {
         CallHelper callHelper(this->_state.GetInterpreter());
         this->Call(callHelper);
@@ -80,7 +82,7 @@ namespace Luasel {
         return Ref(*this);
     }
 
-    void Ref::Call(CallHelper& call) const throw(std::runtime_error)
+    void Ref::Call(CallHelper& call) const
     {
         this->ToStack();
         if (!lua_isfunction(this->_state, -1))
@@ -114,7 +116,7 @@ namespace Luasel {
         }
     }
 
-    Ref Ref::GetTable(std::string const& name) const throw(std::runtime_error)
+    Ref Ref::GetTable(std::string const& name) const
     {
         auto table = this->operator[](name);
         if (!table.Exists())
@@ -124,17 +126,17 @@ namespace Luasel {
         return table;
     }
 
-    Iterator Ref::Begin() const throw(std::runtime_error)
+    Iterator Ref::Begin() const
     {
         return Iterator(*this, false);
     }
 
-    Iterator Ref::End() const throw(std::runtime_error)
+    Iterator Ref::End() const
     {
         return Iterator(*this, true);
     }
 
-    Ref Ref::operator [](Ref const& index) const throw(std::runtime_error)
+    Ref Ref::operator [](Ref const& index) const
     {
         this->ToStack();
         if (!lua_istable(this->_state, -1))
@@ -155,7 +157,7 @@ namespace Luasel {
         return ret;
     }
 
-    Ref Ref::Set(Ref const& key, Ref const& value) const throw(std::runtime_error)
+    Ref Ref::Set(Ref const& key, Ref const& value) const
     {
         this->ToStack();
         if (!lua_istable(this->_state, -1))
@@ -175,7 +177,7 @@ namespace Luasel {
         return value;
     }
 
-    Ref Ref::SetMetaTable(Ref const& table) const throw(std::runtime_error)
+    Ref Ref::SetMetaTable(Ref const& table) const
     {
         this->ToStack();
         table.ToStack();
@@ -260,7 +262,7 @@ namespace Luasel {
     MAKE_TOTEMPLATEMETHOD(ToString, std::string);
 
 #define MAKE_CHECKMETHOD(name, lua_checkfunc, lua_tofunc, type, error) \
-    type Ref::name(std::string const& e) const throw(std::runtime_error) \
+    type Ref::name(std::string const& e) const \
     { \
         this->ToStack(); \
         if (!lua_checkfunc(this->_state, -1)) \
@@ -281,7 +283,7 @@ namespace Luasel {
     MAKE_CHECKMETHOD(CheckNumber, lua_isnumber, lua_tonumber, double, "Luasel::Ref: Value is not of number type");
     MAKE_CHECKMETHOD(CheckUserData, lua_isuserdata, lua_touserdata, void*, "Luasel::Ref: Value is not of user data type");
 
-    std::string Ref::CheckString(std::string const& e) const throw(std::runtime_error)
+    std::string Ref::CheckString(std::string const& e) const
     {
         this->ToStack();
         if (!lua_isstring(this->_state, -1))
@@ -305,7 +307,7 @@ namespace Luasel {
 
 #define MAKE_CHECKTEMPLATEMETHOD(method, type) \
     template <> \
-        type Ref::Check<type>(std::string const& e) const throw(std::runtime_error) \
+        type Ref::Check<type>(std::string const& e) const \
         { \
             return this->method(e); \
         }

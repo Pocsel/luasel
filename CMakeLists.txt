@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 2.8)
 
 project(Luasel)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+include(CreateGroups)
+
 find_package(Boost REQUIRED)
 find_package(Lua51 REQUIRED)
 
@@ -25,8 +28,15 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_CUSTOM_FLAGS
 
 include_directories(${Boost_INCLUDE_DIR} ${LUA_INCLUDE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-file(GLOB src "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[ch]pp")
+file(GLOB luasel_inc "${CMAKE_CURRENT_SOURCE_DIR}/include/luasel/*.hpp")
+file(GLOB luasel_src "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[ch]pp")
 
+set(src
+	${luasel_inc}
+	${luasel_src}
+)
+
+CreateGroups("${src}")
 add_library(luasel ${src})
 
 target_link_libraries(luasel ${LUA_LIBRARIES})

@@ -27,29 +27,29 @@ namespace Luasel {
             bool IsValid() const noexcept; // returns false if Unref() was called, or if the reference was created without copy (with a State)
             size_t GetLength() const noexcept; // returns the length for a string, the size for a table (#), the number of bytes for a user data and 0 for everything else
             // function call
-            void Call(CallHelper& callHelper) const throw(std::runtime_error);
-            Ref operator ()() const throw(std::runtime_error);
+            void Call(CallHelper& callHelper) const; // can throw std::runtime_error
+            Ref operator ()() const; // can throw std::runtime_error
             template <typename T>
-                Ref operator ()(T a1) const throw(std::runtime_error);
+                Ref operator ()(T a1) const; // can throw std::runtime_error
             template <typename T, typename U>
-                Ref operator ()(T a1, U a2) const throw(std::runtime_error);
+                Ref operator ()(T a1, U a2) const; // can throw std::runtime_error
             template <typename T, typename U, typename V>
-                Ref operator ()(T a1, U a2, V a3) const throw(std::runtime_error);
+                Ref operator ()(T a1, U a2, V a3) const; // can throw std::runtime_error
             template <typename T, typename U, typename V, typename W>
-                Ref operator ()(T a1, U a2, V a3, W a4) const throw(std::runtime_error);
+                Ref operator ()(T a1, U a2, V a3, W a4) const; // can throw std::runtime_error
             // array access
-            Ref GetTable(std::string const& name) const throw(std::runtime_error); // returns the table "name" (it is created if necessary)
-            Iterator Begin() const throw(std::runtime_error);
-            Iterator End() const throw(std::runtime_error); // iterators are equal ONLY if they are end iterators (ref.Begin() != ref.Begin())
-            Ref operator [](Ref const& index) const throw(std::runtime_error);
+            Ref GetTable(std::string const& name) const; // can throw std::runtime_error // returns the table "name" (it is created if necessary)
+            Iterator Begin() const; // can throw std::runtime_error
+            Iterator End() const; // can throw std::runtime_error // iterators are equal ONLY if they are end iterators (ref.Begin() != ref.Begin())
+            Ref operator [](Ref const& index) const; // can throw std::runtime_error
             template <typename T>
-                Ref operator [](T index) const throw(std::runtime_error);
+                Ref operator [](T index) const; // can throw std::runtime_error
             // array setters
-            Ref Set(Ref const& key, Ref const& value) const throw(std::runtime_error); // returns value
+            Ref Set(Ref const& key, Ref const& value) const; // can throw std::runtime_error // returns value
             template <typename T, typename U>
-                Ref Set(T key, U value) const throw(std::runtime_error); // returns a new reference to value
+                Ref Set(T key, U value) const; // can throw std::runtime_error // returns a new reference to value
             // metatable
-            Ref SetMetaTable(Ref const& table) const throw(std::runtime_error); // returns table
+            Ref SetMetaTable(Ref const& table) const; // can throw std::runtime_error // returns table
             bool HasMetaTable() const noexcept; // might return true even if the metatable is not a table (but something else like a number)
             Ref GetMetaTable() const noexcept; // returns a reference to nil if no metatable was found
             // safe type conversions
@@ -63,15 +63,15 @@ namespace Luasel {
             template <typename T>
                 T To(T const& defaultValue) const noexcept;
             // unsafe type conversions
-            bool CheckBoolean(std::string const& e = "") const throw(std::runtime_error);
-            int CheckInteger(std::string const& e = "") const throw(std::runtime_error); // actually checks for a number, because an integer is a number for lua
-            double CheckNumber(std::string const& e = "") const throw(std::runtime_error);
-            std::string CheckString(std::string const& e = "") const throw(std::runtime_error);
-            void* CheckUserData(std::string const& e = "") const throw(std::runtime_error);
+            bool CheckBoolean(std::string const& e = "") const; // can throw std::runtime_error
+            int CheckInteger(std::string const& e = "") const; // can throw std::runtime_error // actually checks for a number, because an integer is a number for lua
+            double CheckNumber(std::string const& e = "") const; // can throw std::runtime_error
+            std::string CheckString(std::string const& e = "") const; // can throw std::runtime_error
+            void* CheckUserData(std::string const& e = "") const; // can throw std::runtime_error
             template <typename T>
-                T Check(std::string const& e) const throw(std::runtime_error);
+                T Check(std::string const& e) const; // can throw std::runtime_error
             template <typename T>
-                T Check() const throw(std::runtime_error) { return this->Check<T>(""); }
+                T Check() const { return this->Check<T>(""); } // can throw std::runtime_error
             // type tests
             std::string GetTypeName() const noexcept;
             int GetType() const noexcept; // possible values : LUA_TNIL, LUA_TBOOLEAN, LUA_TLIGHTUSERDATA, LUA_TNUMBER, LUA_TSTRING, LUA_TTABLE, LUA_TFUNCTION, LUA_TUSERDATA, LUA_TTHREAD, LUA_TNONE

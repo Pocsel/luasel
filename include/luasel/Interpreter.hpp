@@ -33,14 +33,14 @@ namespace Luasel {
             Serializer _serializer;
 
         public:
-            Interpreter() throw(std::runtime_error);
+            Interpreter(); // can throw std::runtime_error
             ~Interpreter() noexcept;
             Serializer const& GetSerializer() const { return this->_serializer; }
             // script loading
-            Ref LoadString(std::string const& code) const throw(std::runtime_error);
-            void RegisterLib(LibId lib) throw(std::runtime_error);
-            void DoString(std::string const& code) const throw(std::runtime_error);
-            void DoFile(std::string const& path) const throw(std::runtime_error);
+            Ref LoadString(std::string const& code) const; // can throw std::runtime_error
+            void RegisterLib(LibId lib); // can throw std::runtime_error
+            void DoString(std::string const& code) const; // can throw std::runtime_error
+            void DoFile(std::string const& path) const; // can throw std::runtime_error
             // global table
             Ref const& Globals() const noexcept;
             // reference creators
@@ -51,11 +51,11 @@ namespace Luasel {
             Ref MakeNumber(double val) noexcept { return this->_state->MakeNumber(val); }
             Ref MakeString(std::string const& val) noexcept { return this->_state->MakeString(val); }
             Ref MakeTable() noexcept { return this->_state->MakeTable(); }
-            Ref MakeUserData(void** data, size_t size) throw(std::runtime_error) { return this->_state->MakeUserData(data, size); }
+            Ref MakeUserData(void** data, size_t size) { return this->_state->MakeUserData(data, size); } // can throw std::runtime_error
             template <typename T>
-                Ref Make(T val) throw(std::runtime_error);
+                Ref Make(T val); // can throw std::runtime_error
             template <typename T>
-                Ref MakeMove(T&& val) throw(std::runtime_error);
+                Ref MakeMove(T&& val); // can throw std::runtime_error
             // other stuff
             State& GetState() noexcept { return *this->_state; }
             void DumpStack() const noexcept;

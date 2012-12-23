@@ -143,24 +143,24 @@ namespace Luasel {
 
     /********* Interpreter *********/
     template <typename T>
-        inline Ref Interpreter::Make(T val) throw(std::runtime_error)
+        inline Ref Interpreter::Make(T val)
         {
             auto const& m = this->_state->GetMetaTable(typeid(T).hash_code());
             return m.MakeReference(std::move(val));
         }
-    template<> inline Ref Interpreter::Make<bool>(bool val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<int>(int val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<unsigned int>(unsigned int val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<char>(char val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<unsigned char>(unsigned char val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<double>(double val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<float>(float val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<std::string>(std::string val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<char const*>(char const* val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<std::function<void(CallHelper&)>>(std::function<void(CallHelper&)> val) throw(std::runtime_error) { return this->_state->Make(val); }
-    template<> inline Ref Interpreter::Make<Ref>(Ref val) throw(std::runtime_error) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<bool>(bool val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<int>(int val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<unsigned int>(unsigned int val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<char>(char val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<unsigned char>(unsigned char val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<double>(double val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<float>(float val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<std::string>(std::string val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<char const*>(char const* val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<std::function<void(CallHelper&)>>(std::function<void(CallHelper&)> val) { return this->_state->Make(val); }
+    template<> inline Ref Interpreter::Make<Ref>(Ref val) { return this->_state->Make(val); }
     template <typename T>
-        inline Ref Interpreter::MakeMove(T&& val) throw(std::runtime_error)
+        inline Ref Interpreter::MakeMove(T&& val)
         {
             auto const& m = this->_state->GetMetaTable(typeid(T).hash_code());
             return m.MakeReference(std::move(val));
@@ -216,18 +216,18 @@ namespace Luasel {
             return true;
         }
 
-    template<> bool Ref::Check<bool>(std::string const& e /* = "" */) const throw(std::runtime_error);
-    template<> int Ref::Check<int>(std::string const& e /* = "" */) const throw(std::runtime_error);
-    template<> unsigned int Ref::Check<unsigned int>(std::string const& e /* = "" */) const throw(std::runtime_error);
-    template<> char Ref::Check<char>(std::string const& e /* = "" */) const throw(std::runtime_error);
-    template<> unsigned char Ref::Check<unsigned char>(std::string const& e /* = "" */) const throw(std::runtime_error);
-    template<> double Ref::Check<double>(std::string const& e /* = "" */) const throw(std::runtime_error);
-    template<> float Ref::Check<float>(std::string const& e /* = "" */) const throw(std::runtime_error);
-    template<> std::string Ref::Check<std::string>(std::string const& e /* = "" */) const throw(std::runtime_error);
-    template<> inline Ref Ref::Check<Ref>(std::string const&) const throw(std::runtime_error) { return *this; }
+    template<> bool Ref::Check<bool>(std::string const& e /* = "" */) const;
+    template<> int Ref::Check<int>(std::string const& e /* = "" */) const;
+    template<> unsigned int Ref::Check<unsigned int>(std::string const& e /* = "" */) const;
+    template<> char Ref::Check<char>(std::string const& e /* = "" */) const;
+    template<> unsigned char Ref::Check<unsigned char>(std::string const& e /* = "" */) const;
+    template<> double Ref::Check<double>(std::string const& e /* = "" */) const;
+    template<> float Ref::Check<float>(std::string const& e /* = "" */) const;
+    template<> std::string Ref::Check<std::string>(std::string const& e /* = "" */) const;
+    template<> inline Ref Ref::Check<Ref>(std::string const&) const { return *this; }
 
     template<class T>
-        inline T Ref::Check(std::string const& err /* = "" */) const throw(std::runtime_error)
+        inline T Ref::Check(std::string const& err /* = "" */) const
         {
             try
             {
@@ -270,7 +270,7 @@ namespace Luasel {
         }
 
     template <typename T>
-        inline Ref Ref::operator ()(T a1) const throw(std::runtime_error)
+        inline Ref Ref::operator ()(T a1) const
         {
             CallHelper callHelper(this->_state.GetInterpreter());
             callHelper.PushArg(this->_state.GetInterpreter().Make(a1));
@@ -281,7 +281,7 @@ namespace Luasel {
         }
 
     template <typename T, typename U>
-        inline Ref Ref::operator ()(T a1, U a2) const throw(std::runtime_error)
+        inline Ref Ref::operator ()(T a1, U a2) const
         {
             CallHelper callHelper(this->_state.GetInterpreter());
             callHelper.PushArg(this->_state.GetInterpreter().Make(a1));
@@ -293,7 +293,7 @@ namespace Luasel {
         }
 
     template <typename T, typename U, typename V>
-        inline Ref Ref::operator ()(T a1, U a2, V a3) const throw(std::runtime_error)
+        inline Ref Ref::operator ()(T a1, U a2, V a3) const
         {
             CallHelper callHelper(this->_state.GetInterpreter());
             callHelper.PushArg(this->_state.GetInterpreter().Make(a1));
@@ -306,7 +306,7 @@ namespace Luasel {
         }
 
     template <typename T, typename U, typename V, typename W>
-        inline Ref Ref::operator ()(T a1, U a2, V a3, W a4) const throw(std::runtime_error)
+        inline Ref Ref::operator ()(T a1, U a2, V a3, W a4) const
         {
             CallHelper callHelper(this->_state.GetInterpreter());
             callHelper.PushArg(this->_state.GetInterpreter().Make(a1));
@@ -320,13 +320,13 @@ namespace Luasel {
         }
 
     template <typename T>
-        inline Ref Ref::operator [](T index) const throw(std::runtime_error)
+        inline Ref Ref::operator [](T index) const
         {
             return (*this)[this->_state.Make(index)];
         }
 
     template <typename T, typename U>
-        inline Ref Ref::Set(T key, U value) const throw(std::runtime_error)
+        inline Ref Ref::Set(T key, U value) const
         {
             return this->Set(this->_state.Make(key), this->_state.Make(value));
         }

@@ -1,9 +1,11 @@
+#include "Luasel.hpp"
+
 #include <luasel/Lua.hpp>
 #include <luasel/Iterator.hpp>
 
 namespace Luasel {
 
-    Iterator::Iterator(Ref const& table, bool end) throw(std::runtime_error) :
+    Iterator::Iterator(Ref const& table, bool end) :
         _table(table), _key(table.GetState()), _value(table.GetState()), _end(end)
     {
         if (!this->_end)
@@ -38,7 +40,7 @@ namespace Luasel {
         return !(*this == iterator);
     }
 
-    Iterator& Iterator::operator ++() throw(std::runtime_error)
+    Iterator& Iterator::operator ++()
     {
         if (this->_end)
             throw std::runtime_error("Luasel::Iterator: Incrementing end iterator");

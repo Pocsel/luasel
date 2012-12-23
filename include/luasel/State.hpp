@@ -36,7 +36,7 @@ namespace Luasel {
             bool _garbageCollectionEnabled;
 
         public:
-            State(Interpreter& interpreter) throw(std::runtime_error);
+            State(Interpreter& interpreter); // can throw std::runtime_error
             ~State();
             bool GetGarbageCollectionEnabled() const noexcept { return this->_garbageCollectionEnabled; }
             void StopGarbageCollector() noexcept;
@@ -49,12 +49,12 @@ namespace Luasel {
             Ref MakeNumber(double val) noexcept;
             Ref MakeString(std::string const& val) noexcept;
             Ref MakeTable() noexcept;
-            Ref MakeUserData(void** data, size_t size) throw(std::runtime_error);
+            Ref MakeUserData(void** data, size_t size); // can throw std::runtime_error
             template<typename T>
                 Ref Make(T const& val) noexcept;
             operator lua_State*() const noexcept { return this->_state; }
             Interpreter& GetInterpreter() noexcept { return this->_interpreter; }
-            MetaTable const& GetMetaTable(std::size_t hash) throw(std::runtime_error);
+            MetaTable const& GetMetaTable(std::size_t hash); // can throw std::runtime_error
             Ref GetWeakReference(unsigned int id) const;
             unsigned int GetWeakReference(Ref const& ref);
     };
