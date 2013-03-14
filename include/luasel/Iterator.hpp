@@ -15,8 +15,6 @@ namespace Luasel {
 
         public:
             Iterator(Ref const& table, bool end); // can throw std::runtime_error
-            Iterator(Iterator const& iterator) noexcept;
-            Iterator& operator =(Iterator const& iterator) noexcept;
             bool operator ==(Iterator const& iterator) const noexcept; // iterators are equal ONLY if they are end iterators
             bool operator !=(Iterator const& iterator) const noexcept;
             Iterator& operator ++(); // can throw std::runtime_error
