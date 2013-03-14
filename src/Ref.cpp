@@ -23,6 +23,12 @@ namespace Luasel {
         *this = ref;
     }
 
+    Ref::Ref(Ref&& ref) noexcept :
+        _state(ref._state), _ref(ref._ref)
+    {
+        ref._ref = LUA_NOREF;
+    }
+
     Ref::~Ref() noexcept
     {
         this->Unref();
@@ -34,6 +40,16 @@ namespace Luasel {
         {
             ref.ToStack();
             this->FromStack();
+        }
+        return *this;
+    }
+
+    Ref& Ref::operator =(Ref&& ref) noexcept
+    {
+        if (this != &ref)
+        {
+            this->_ref = ref._ref;
+            ref._ref = LUA_NOREF;
         }
         return *this;
     }

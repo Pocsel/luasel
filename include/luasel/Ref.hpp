@@ -17,8 +17,10 @@ namespace Luasel {
         public:
             Ref(State& state) noexcept;
             Ref(Ref const& ref) noexcept;
+            Ref(Ref&& ref) noexcept;
             ~Ref() noexcept; // call Unref() to allow destruction after interpreter destruction without crashing
             Ref& operator =(Ref const& ref) noexcept;
+            Ref& operator =(Ref&& ref) noexcept;
             bool operator ==(Ref const& ref) const noexcept; // this is a value comparison, not a reference comparison (uses lua_rawequal)
             bool operator !=(Ref const& ref) const noexcept; // same
             template <typename T>
