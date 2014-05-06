@@ -146,7 +146,6 @@ namespace Luasel {
         static typename FunctionTraits<TFunc>::result apply(TFunc f, std::tuple<TArgs...> args)
         {
             return FunctionTraits<TFunc>::call(f, Get<TArgs>::get(std::get<Indices>(args))...);
-            //return f(std::forward<TArgs>(std::get<Indices>(args))...);
         }
     };
 

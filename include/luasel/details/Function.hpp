@@ -1,5 +1,4 @@
-#ifndef __LUASEL_FUNCTION_HPP__
-#define __LUASEL_FUNCTION_HPP__
+#pragma once
 
 #include <luasel/Luasel.hpp>
 
@@ -204,7 +203,7 @@ namespace Luasel {
     }
 
     template<class Tret, class... Trets>
-    inline std::tuple<Tret, Trets...> CallHelper::popArgs(Tret arg, Trets... args)
+    inline std::tuple<Tret, Trets...> CallHelper::popArgs(Tret, Trets... args)
     {
         auto tuple = std::make_tuple(this->PopArg().Check<Tret>());
         return std::tuple_cat(std::move(tuple), this->popArgs(args...));
@@ -288,5 +287,3 @@ namespace Luasel {
     }
 
 }
-
-#endif
