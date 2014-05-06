@@ -1,5 +1,4 @@
-#ifndef  __LUASEL_TYPELIST_HPP__
-# define __LUASEL_TYPELIST_HPP__
+#pragma once
 
 namespace Luasel {
 
@@ -57,5 +56,3 @@ namespace Luasel {
     Luasel::TypeList<T1, LUASEL_TYPELIST8(T2, T3, T4, T5, T6, T7, T8, T9)>
 
 }
-
-#endif

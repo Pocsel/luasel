@@ -1,6 +1,11 @@
-#ifndef __LUASEL_LUASEL_HPP__
-#define __LUASEL_LUASEL_HPP__
+#pragma once
 
-#include <luasel/Interpreter.hpp>
-
+#ifdef _MSC_VER
+// dirty hack for MS Compiler
+# ifndef noexcept
+#  define _ALLOW_KEYWORD_MACROS
+#  define noexcept throw()
+# endif
 #endif
+
+#include <luasel/details/Function.hpp>

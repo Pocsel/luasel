@@ -1,8 +1,7 @@
-#ifndef __LUASEL_WEAKREF_HPP__
-#define __LUASEL_WEAKREF_HPP__
+#pragma once
 
-#include <luasel/Ref.hpp>
-#include <luasel/State.hpp>
+#include <luasel/details/Ref.hpp>
+#include <luasel/details/State.hpp>
 
 namespace Luasel {
 
@@ -23,5 +22,3 @@ namespace Luasel {
     };
 
 }
-
-#endif

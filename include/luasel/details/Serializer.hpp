@@ -1,5 +1,4 @@
-#ifndef __LUASEL_SERIALIZER_HPP__
-#define __LUASEL_SERIALIZER_HPP__
+#pragma once
 
 namespace Luasel {
 
@@ -27,5 +26,3 @@ namespace Luasel {
     };
 
 }
-
-#endif

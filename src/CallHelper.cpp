@@ -1,8 +1,4 @@
-#include "Luasel.hpp"
-
-#include <luasel/CallHelper.hpp>
-#include <luasel/Interpreter.hpp>
-#include <luasel/Ref.hpp>
+#include <luasel/Luasel.hpp>
 
 namespace Luasel {
 

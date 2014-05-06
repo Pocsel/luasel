@@ -1,9 +1,7 @@
-#include "Luasel.hpp"
-
 #include <algorithm>
 #include <boost/lexical_cast.hpp>
-#include <luasel/Interpreter.hpp>
-#include <luasel/Iterator.hpp>
+
+#include <luasel/Luasel.hpp>
 
 namespace Luasel {
 
@@ -96,7 +94,7 @@ namespace Luasel {
         }
         try
         {
-            return cloneFunc(ref);
+            return cloneFunc(std::move(Ref(ref)));
         }
         catch (std::exception& e)
         {

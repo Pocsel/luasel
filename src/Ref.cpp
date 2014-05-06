@@ -1,9 +1,6 @@
-#include "Luasel.hpp"
+#include <luasel/Luasel.hpp>
 
-#include <luasel/Lua.hpp>
-#include <luasel/Ref.hpp>
-#include <luasel/Iterator.hpp>
-#include <luasel/Interpreter.hpp>
+#include "Lua.hpp"
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4244) // return conversion double to float (data lost)
@@ -87,15 +84,6 @@ namespace Luasel {
         size_t ret = lua_objlen(this->_state, -1);
         lua_pop(this->_state, 1);
         return ret;
-    }
-
-    Ref Ref::operator ()() const
-    {
-        CallHelper callHelper(this->_state.GetInterpreter());
-        this->Call(callHelper);
-        if (callHelper.GetNbRets())
-            return callHelper.PopRet();
-        return Ref(*this);
     }
 
     void Ref::Call(CallHelper& call) const

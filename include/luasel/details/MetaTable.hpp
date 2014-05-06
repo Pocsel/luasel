@@ -1,8 +1,6 @@
-#ifndef __LUASEL_METATABLE_HPP__
-#define __LUASEL_METATABLE_HPP__
+#pragma once
 
-#include <boost/lambda/construct.hpp>
-#include <luasel/Interpreter.hpp>
+#include <luasel/details/Interpreter.hpp>
 
 namespace Luasel {
 
@@ -90,5 +88,3 @@ namespace Luasel {
     };
 
 }
-
-#endif

@@ -1,7 +1,6 @@
-#ifndef __LUASEL_ITERATOR_HPP__
-#define __LUASEL_ITERATOR_HPP__
+#pragma once
 
-#include <luasel/Ref.hpp>
+#include <luasel/details/Ref.hpp>
 
 namespace Luasel {
 
@@ -25,5 +24,3 @@ namespace Luasel {
     };
 
 }
-
-#endif

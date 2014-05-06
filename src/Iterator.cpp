@@ -1,7 +1,5 @@
-#include "Luasel.hpp"
-
-#include <luasel/Lua.hpp>
-#include <luasel/Iterator.hpp>
+#include <luasel/Luasel.hpp>
+#include "Lua.hpp"
 
 namespace Luasel {
 

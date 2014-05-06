@@ -14,4 +14,4 @@ file(GLOB src "${CMAKE_CURRENT_SOURCE_DIR}/*.[ch]pp")
 
 add_executable(example ${src})
 
-target_link_libraries(example "${CMAKE_CURRENT_SOURCE_DIR}/../build/libluasel.a" ${LUA_LIBRARIES})
+target_link_libraries(example luasel ${LUA_LIBRARIES})

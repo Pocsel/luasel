@@ -1,12 +1,6 @@
-#include "Luasel.hpp"
+#include <luasel/Luasel.hpp>
 
-#include <luasel/Lua.hpp>
-#include <luasel/State.hpp>
-#include <luasel/CallHelper.hpp>
-#include <luasel/Ref.hpp>
-#include <luasel/Interpreter.hpp>
-#include <luasel/Iterator.hpp>
-#include <luasel/MetaTable.hpp>
+#include "Lua.hpp"
 
 namespace {
 

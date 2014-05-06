@@ -1,8 +1,8 @@
 #ifndef __LUASEL_STATE_HPP__
 #define __LUASEL_STATE_HPP__
 
-#include <stdexcept>
 #include <functional>
+#include <stdexcept>
 #include <unordered_map>
 #include <boost/noncopyable.hpp>
 

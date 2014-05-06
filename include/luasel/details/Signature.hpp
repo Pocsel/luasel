@@ -1,8 +1,7 @@
-#ifndef __LUASEL_SIGNATURE_HPP__
-#define __LUASEL_SIGNATURE_HPP__
+#pragma once
 
 #include <functional>
-#include <luasel/TypeList.hpp>
+#include <luasel/details/TypeList.hpp>
 
 namespace Luasel {
 
@@ -90,5 +89,3 @@ namespace Luasel {
     };
 
 }
-
-#endif

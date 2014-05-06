@@ -1,7 +1,6 @@
-#include "Luasel.hpp"
-
 #include <cassert>
-#include <luasel/WeakRef.hpp>
+
+#include <luasel/Luasel.hpp>
 
 namespace Luasel {
 

@@ -1,10 +1,8 @@
-#include "Luasel.hpp"
-
 #include <iostream>
-#include <luasel/Lua.hpp>
-#include <luasel/Interpreter.hpp>
-#include <luasel/Ref.hpp>
-#include <luasel/Iterator.hpp>
+
+#include <luasel/Luasel.hpp>
+
+#include "Lua.hpp"
 
 namespace Luasel {
 
@@ -43,40 +41,40 @@ namespace Luasel {
         lua_CFunction func;
         switch (lib)
         {
-            case Base:
-                name = "";
-                func = &luaopen_base;
-                break;
-            case Math:
-                name = LUA_MATHLIBNAME;
-                func = &luaopen_math;
-                break;
-            case Table:
-                name = LUA_TABLIBNAME;
-                func = &luaopen_table;
-                break;
-            case String:
-                name = LUA_STRLIBNAME;
-                func = &luaopen_string;
-                break;
-            case Io:
-                name = LUA_IOLIBNAME;
-                func = &luaopen_io;
-                break;
-            case Os:
-                name = LUA_OSLIBNAME;
-                func = &luaopen_os;
-                break;
-            case Debug:
-                name = LUA_DBLIBNAME;
-                func = &luaopen_debug;
-                break;
-            case Package:
-                name = LUA_LOADLIBNAME;
-                func = &luaopen_package;
-                break;
-            default:
-                throw std::runtime_error("Luasel::Interpreter: Lib not found");
+        case LibId::Base:
+            name = "";
+            func = &luaopen_base;
+            break;
+        case LibId::Math:
+            name = LUA_MATHLIBNAME;
+            func = &luaopen_math;
+            break;
+        case LibId::Table:
+            name = LUA_TABLIBNAME;
+            func = &luaopen_table;
+            break;
+        case LibId::String:
+            name = LUA_STRLIBNAME;
+            func = &luaopen_string;
+            break;
+        case LibId::Io:
+            name = LUA_IOLIBNAME;
+            func = &luaopen_io;
+            break;
+        case LibId::Os:
+            name = LUA_OSLIBNAME;
+            func = &luaopen_os;
+            break;
+        case LibId::Debug:
+            name = LUA_DBLIBNAME;
+            func = &luaopen_debug;
+            break;
+        case LibId::Package:
+            name = LUA_LOADLIBNAME;
+            func = &luaopen_package;
+            break;
+        default:
+            throw std::runtime_error("Luasel::Interpreter: Lib not found");
         }
         lua_pushcfunction(*this->_state, func);
         lua_pushstring(*this->_state, name);
@@ -87,7 +85,7 @@ namespace Luasel {
             lua_pop(*this->_state, 1);
             throw std::runtime_error(e);
         }
-        if (lib == Base)
+        if (lib == LibId::Base)
         {
             auto oldGetmetatable = this->Globals()["getmetatable"];
             this->Globals().Set("getmetatable", this->MakeFunction(
@@ -96,7 +94,7 @@ namespace Luasel {
                     auto obj = helper.GetArgList().front();
                     if (obj.IsUserData())
                         throw std::runtime_error("Luasel::Interpreter: getmetatable: expected table");
-                    oldGetmetatable(helper);
+                    oldGetmetatable.Call(helper);
                 }));
         }
     }
