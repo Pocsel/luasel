@@ -84,7 +84,6 @@ namespace Luasel {
         template<class TFunc>
         typename std::enable_if<!std::is_bind_expression<TFunc>::value && std::is_void<typename FunctionTraits<TFunc>::result>::value, Ref>::type Bind(TFunc function)
         {
-            using tuple = typename GetTuple<typename FunctionTraits<TFunc>::args>::type;
             return this->MakeFunction([function](CallHelper& helper) {
                 apply(function, helper.popArgsTuple<typename GetTuple<typename FunctionTraits<TFunc>::args>::type>());
             });

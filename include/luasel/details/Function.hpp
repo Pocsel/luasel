@@ -204,62 +204,10 @@ namespace Luasel {
     }
 
     template<class Tret, class... Trets>
-    inline std::tuple<Tret, Trets...> CallHelper::popArgs(Tret arg, Trets... args) noexcept
+    inline std::tuple<Tret, Trets...> CallHelper::popArgs(Tret arg, Trets... args)
     {
         auto tuple = std::make_tuple(this->PopArg().Check<Tret>());
         return std::tuple_cat(std::move(tuple), this->popArgs(args...));
-    }
-
-    namespace {
-        template<class... TArgs>
-        std::tuple<TArgs...> _popArgsTuple(CallHelper& helper, std::tuple<TArgs...>&& args)
-        {
-            //return helper.popArgs(TArgs()...);
-            std::function<std::tuple<TArgs...>(TArgs...)> func = std::bind(&CallHelper::popArgs<TArgs...>, helper);
-            return apply(std::move(func), std::forward<std::tuple<TArgs...>>(args));
-        }
-        template<class TTuple>
-        struct _popArgs
-        {
-            static const std::size_t N = std::tuple_size<TTuple>::value;
-
-            template<std::size_t...>
-            struct seq {};
-            template<std::size_t N, std::size_t... S>
-            struct gens : gens<N - 1, N - 1, S...> {};
-            template<std::size_t... S>
-            struct gens<0, S...>
-            {
-                using type = seq<S...>;
-            };
-
-            template<std::size_t I>
-            struct _Pop
-            {
-                using type = typename std::tuple_element<I, TTuple>::type;
-                type operator()(CallHelper& helper)
-                {
-                    return helper.PopArg().Check<type>();
-                }
-            };
-
-            TTuple operator()(CallHelper& helper)
-            {
-                return _popAll(helper, typename gens<N>::type());
-            }
-
-        private:
-            template<std::size_t I>
-            typename _Pop<I>::type _pop(CallHelper& helper)
-            {
-                return _Pop<I>()(helper);
-            }
-            template<std::size_t... S>
-            TTuple _popAll(CallHelper& helper, seq<S...>)
-            {
-                return TTuple(_pop<S>(helper)...);
-            }
-        };
     }
 
     /********* MetaTable *********/
