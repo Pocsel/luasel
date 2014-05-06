@@ -59,8 +59,6 @@ namespace Luasel {
             return _popArgsTuple(TTuple());
             //return _popArgs<TTuple>()(*this);
         }
-        template<>
-        inline std::tuple<> popArgsTuple<std::tuple<>>() { return std::tuple<>(); }
 
     private:
         template<class TR, class... TArgs>
@@ -68,6 +66,7 @@ namespace Luasel {
             return [=](TArgs... args){ return (this->*func)(args...); };
         }
 
+        std::tuple<> _popArgsTuple(std::tuple<>) { return std::tuple<>(); }
         template<class... TArgs>
         std::tuple<TArgs...> _popArgsTuple(std::tuple<TArgs...>&& args)
         {
