@@ -11,15 +11,14 @@ namespace Luasel {
     template<class T> struct _CppNative { using type = typename std::conditional<std::is_pointer<T>::value, T, typename std::add_pointer<T>::type>::type; };
     template<class T>
     struct GetLuaType;
-    template<class T>
-    struct GetLuaType<T const&> : public GetLuaType<T>{};
     template<> struct GetLuaType<bool> : public _LuaNative<bool>{};
     template<> struct GetLuaType<int> : public _LuaNative<int>{};
     template<> struct GetLuaType<double> : public _LuaNative<double>{};
     template<> struct GetLuaType<std::string> : public _LuaNative<std::string>{};
-    template<> struct GetLuaType<std::string*> : public _LuaNative<std::string>{};
     template<> struct GetLuaType<Ref> : public _LuaNative<Ref>{};
     template<class T> struct GetLuaType : public _CppNative<T>{};
+    template<class T> struct GetLuaType<T const> : public GetLuaType<T>{};
+    template<class T> struct GetLuaType<T&> : public GetLuaType<T>{};
 
     template<class TTuple>
     struct GetTuple;

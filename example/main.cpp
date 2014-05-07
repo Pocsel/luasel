@@ -69,7 +69,7 @@ static void Basic(Luasel::Interpreter& i)
 
 static void Iterators(Luasel::Interpreter& i)
 {
-    i.DoString("test = \"sjkldg\\nlkéhsdfg\" g = 323.4 jdsk = {} iwer = {} jkd = function() end");
+    i.DoString("test = \"sjkldg\\nlkÃ©hsdfg\" g = 323.4 jdsk = {} iwer = {} jkd = function() end");
 
     Luasel::Iterator it = i.Globals().Begin();
     Luasel::Iterator itEnd = i.Globals().End();
@@ -141,7 +141,7 @@ static void MetaTableCpp(Luasel::Interpreter& i)
         {
             return A();
         }
-        void Print(int nb) const { std::cout << "A::Print(" << nb << ")\n"; }
+        void Print(int nb) { i = nb; std::cout << "A::Print(" << nb << ")\n"; }
     };
 
 
@@ -165,6 +165,7 @@ static void MetaTableCpp(Luasel::Interpreter& i)
     i.DoString("a = A()\
                a:Print(50)");
 
+    // VS compiler bug here - construct a new std::string instead of passing it from "Luasel::Ref::Check<std::string>"
     i.Globals().Set("B", i.Bind([](int toto, std::string const& titi) { std::cout << toto << ". " << titi << std::endl; }));
     i.DoString("B(50, 'coucou')");
 
@@ -185,7 +186,7 @@ int main(int, char**)
         // Tests basiques (assignation, ...)
         Basic(i);
 
-        // Test itération des globales
+        // Test itÃ©ration des globales
         Iterators(i);
 
         // Test meta-tables lua

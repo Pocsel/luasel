@@ -57,7 +57,6 @@ namespace Luasel {
         TTuple popArgsTuple()
         {
              return _popArgsTuple(TTuple());
-            //return _popArgs<TTuple>()(*this);
         }
 
     private:
@@ -70,7 +69,6 @@ namespace Luasel {
         template<class... TArgs>
         std::tuple<TArgs...> _popArgsTuple(std::tuple<TArgs...>&& args)
         {
-            //return helper.popArgs(TArgs()...);
             std::function<std::tuple<TArgs...>(TArgs...)> func = _objectBind(&CallHelper::popArgs<TArgs...>);
             return apply(std::move(func), std::forward<std::tuple<TArgs...>>(args));
         }

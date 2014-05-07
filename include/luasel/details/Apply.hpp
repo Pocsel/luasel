@@ -66,7 +66,7 @@ namespace Luasel {
         using result = TResult;
         using args = std::tuple<TArgs...>;
 
-        static result call(std::function<TResult(TArgs...)>& func, TArgs... args)
+        static result call(std::function<TResult(TArgs...)>&& func, TArgs... args)
         {
             return func(std::forward<TArgs>(args)...);
         }
@@ -147,7 +147,7 @@ namespace Luasel {
         static typename FunctionTraits<TFunc>::result apply(TFunc f, std::tuple<TArgs...>&& args)
         {
             using traits = FunctionTraits<TFunc>;
-            return traits::call(std::forward<TFunc>(f), Get<std::tuple_element<Indices, traits::args>::type>::get(std::get<Indices>(args))...);
+            return traits::call(std::forward<TFunc>(f), Get<typename std::tuple_element<Indices, typename traits::args>::type>::get(std::get<Indices>(args))...);
         }
     };
 
