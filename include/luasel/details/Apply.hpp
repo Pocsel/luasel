@@ -22,7 +22,7 @@ namespace Luasel {
         using args = std::tuple<TArgs...>;
 
         template<class TFunc>
-        static result call(TFunc f, TArgs&&... args)
+        static result call(TFunc f, TArgs... args)
         {
             return f(std::forward<TArgs>(args)...);
         }
@@ -41,9 +41,9 @@ namespace Luasel {
         using argsWithoutObj = std::tuple<TArgs...>;
 
         template<class TFunc>
-        static result call(TFunc f, typename std::remove_reference<TClass>::type* obj, TArgs&&... args)
+        static result call(TFunc f, TClass obj, TArgs... args)
         {
-            return (obj->*f)(std::forward<TArgs>(args)...);
+            return (obj.*f)(std::forward<TArgs>(args)...);
         }
     };
 
@@ -66,7 +66,7 @@ namespace Luasel {
         using result = TResult;
         using args = std::tuple<TArgs...>;
 
-        static result call(std::function<TResult(TArgs...)>& func, TArgs&&... args)
+        static result call(std::function<TResult(TArgs...)>& func, TArgs... args)
         {
             return func(std::forward<TArgs>(args)...);
         }
@@ -120,22 +120,23 @@ namespace Luasel {
     template<class TRet>
     struct Get
     {
-        using Ret = typename std::remove_reference<TRet>::type;
+        using Ret = typename std::remove_reference<typename std::remove_cv<TRet>::type>::type;
         using RetNP = typename std::remove_pointer<Ret>::type;
+        using RetP = typename std::add_pointer<Ret>::type;
 
         //template<class TArg>
         //static TRet get(TArg&& x);// { return std::forward<TArg>(x); }
 
         template<class TArg>
-        static TRet get(TArg x, typename std::enable_if<std::is_same<typename std::remove_reference<TArg>::type, Ret>::value>::type* = nullptr)
+        static TRet get(TArg x, typename std::enable_if<std::is_convertible<typename std::remove_reference<TArg>::type, Ret>::value>::type* = nullptr)
         { return std::forward<TArg>(x); }
 
         template<class TArg>
-        static TRet get(TArg x, typename std::enable_if<!std::is_same<typename std::remove_reference<TArg>::type, Ret>::value && std::is_same<typename std::remove_pointer<typename std::remove_reference<TArg>::type>::type, Ret>::value>::type* = nullptr)
+        static TRet get(TArg x, typename std::enable_if<std::is_convertible<typename std::remove_reference<TArg>::type, RetP>::value>::type* = nullptr)
         { return *x; }
 
         template<class TArg>
-        static TRet get(TArg x, typename std::enable_if<!std::is_same<typename std::remove_reference<TArg>::type, Ret>::value && std::is_same<typename std::remove_reference<TArg>::type, RetNP>::value>::type* = nullptr)
+        static TRet get(TArg x, typename std::enable_if<std::is_convertible<typename std::remove_reference<TArg>::type, RetNP>::value && !std::is_same<Ret, RetNP>::value>::type* = nullptr)
         { return &x; }
     };
 
@@ -143,15 +144,16 @@ namespace Luasel {
     struct ApplyTuple_Impl<TIndice<Indices...>>
     {
         template<class TFunc, class... TArgs>
-        static typename FunctionTraits<TFunc>::result apply(TFunc f, std::tuple<TArgs...> args)
+        static typename FunctionTraits<TFunc>::result apply(TFunc f, std::tuple<TArgs...>&& args)
         {
-            return FunctionTraits<TFunc>::call(f, Get<TArgs>::get(std::get<Indices>(args))...);
+            using traits = FunctionTraits<TFunc>;
+            return traits::call(std::forward<TFunc>(f), Get<std::tuple_element<Indices, traits::args>::type>::get(std::get<Indices>(args))...);
         }
     };
 
     template<class TFunc, class... TArgs, class Indices = typename MakeIndices<0, TArgs...>::type>
-    inline typename FunctionTraits<TFunc>::result apply(TFunc f, std::tuple<TArgs...> args)
+    inline typename FunctionTraits<TFunc>::result apply(TFunc f, std::tuple<TArgs...>&& args)
     {
-        return ApplyTuple_Impl<Indices>::apply(std::forward<TFunc>(f), std::forward<std::tuple<TArgs...>>(args));
+        return ApplyTuple_Impl<Indices>::apply(std::forward<TFunc>(f), std::forward<std::tuple<TArgs...>&&>(args));
     }
 }

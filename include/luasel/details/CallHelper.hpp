@@ -56,7 +56,7 @@ namespace Luasel {
         template<class TTuple>
         TTuple popArgsTuple()
         {
-            return _popArgsTuple(TTuple());
+             return _popArgsTuple(TTuple());
             //return _popArgs<TTuple>()(*this);
         }
 

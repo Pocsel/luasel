@@ -147,6 +147,7 @@ static void MetaTableCpp(Luasel::Interpreter& i)
 
     auto& meta = Luasel::MetaTable::Create(i, A());
     meta.SetMethod("Print", i.Bind(&A::Print));
+    meta.SetMetaMethod(Luasel::MetaTable::Collect, i.Bind([](){ std::cout << "collect\n"; }));
 
     try
     {
@@ -164,7 +165,7 @@ static void MetaTableCpp(Luasel::Interpreter& i)
     i.DoString("a = A()\
                a:Print(50)");
 
-    i.Globals().Set("B", i.Bind([](int toto, std::string titi) { std::cout << toto << ". " << titi << std::endl; }));
+    i.Globals().Set("B", i.Bind([](int toto, std::string const& titi) { std::cout << toto << ". " << titi << std::endl; }));
     i.DoString("B(50, 'coucou')");
 
     i.Globals().Set("C", i.Bind([](double toto, A* titi) { std::cout << toto << ". " << titi->i << std::endl; }));
