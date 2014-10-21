@@ -19,6 +19,10 @@ namespace Luasel {
 
     public:
         CallHelper(Interpreter& i) noexcept;
+
+        CallHelper(CallHelper const&) = delete;
+        CallHelper& operator =(CallHelper const&) = delete;
+
         Interpreter& GetInterpreter() noexcept{ return this->_i; }
             // arguments
         void PushArg(Ref const& arg) noexcept;

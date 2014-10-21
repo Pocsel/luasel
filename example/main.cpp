@@ -167,7 +167,7 @@ static void MetaTableCpp(Luasel::Interpreter& i)
 
     // VS compiler bug here - construct a new std::string instead of passing it from "Luasel::Ref::Check<std::string>"
     i.Globals().Set("B", i.Bind([](int toto, std::string const& titi) { std::cout << toto << ". " << titi << std::endl; }));
-    i.DoString("B(50, 'coucou')");
+    i.DoString("B('50', 'coucou')");
 
     i.Globals().Set("C", i.Bind([](double toto, A* titi) { std::cout << toto << ". " << titi->i << std::endl; }));
     i.DoString("C(50, a)");
@@ -199,6 +199,10 @@ int main(int, char**)
         MetaTableCpp(i);
 
     }
+
+    int i = 0;
+    Luasel::apply([](std::string const& test, int& i){ std::cout << test << std::endl; i++; }, std::make_tuple("test", std::ref(i)));
+    std::cout << i << std::endl;
 
 
 #ifdef _WIN32

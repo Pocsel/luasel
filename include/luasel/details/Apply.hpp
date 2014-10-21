@@ -82,7 +82,7 @@ namespace Luasel {
         using args = typename traits::argsWithoutObj;
 
         template<class TFunc, class... TArgs>
-        static result call(TFunc f, TArgs... args)
+        static result call(TFunc f, TArgs&&... args)
         {
             return f(std::forward<TArgs>(args)...);
         }
@@ -120,7 +120,7 @@ namespace Luasel {
     template<class TRet>
     struct Get
     {
-        using Ret = typename std::remove_reference<typename std::remove_cv<TRet>::type>::type;
+        using Ret = typename std::remove_reference<TRet>::type;
         using RetNP = typename std::remove_pointer<Ret>::type;
         using RetP = typename std::add_pointer<Ret>::type;
 
@@ -128,15 +128,15 @@ namespace Luasel {
         //static TRet get(TArg&& x);// { return std::forward<TArg>(x); }
 
         template<class TArg>
-        static TRet get(TArg x, typename std::enable_if<std::is_convertible<typename std::remove_reference<TArg>::type, Ret>::value>::type* = nullptr)
+        static TArg&& get(TArg&& x, typename std::enable_if<std::is_convertible<typename std::remove_reference<TArg>::type, Ret>::value>::type* = nullptr)
         { return std::forward<TArg>(x); }
 
         template<class TArg>
-        static TRet get(TArg x, typename std::enable_if<std::is_convertible<typename std::remove_reference<TArg>::type, RetP>::value>::type* = nullptr)
+        static TRet get(TArg&& x, typename std::enable_if<std::is_convertible<typename std::remove_reference<TArg>::type, RetP>::value>::type* = nullptr)
         { return *x; }
 
         template<class TArg>
-        static TRet get(TArg x, typename std::enable_if<std::is_convertible<typename std::remove_reference<TArg>::type, RetNP>::value && !std::is_same<Ret, RetNP>::value>::type* = nullptr)
+        static Ret get(TArg&& x, typename std::enable_if<std::is_convertible<typename std::remove_reference<TArg>::type, RetNP>::value && !std::is_same<Ret, RetNP>::value>::type* = nullptr)
         { return &x; }
     };
 
